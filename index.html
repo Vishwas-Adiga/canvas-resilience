@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <style>
+      .height-calculator {
+        position: absolute;
+        top: -10000px;
+        left: -10000px;
+      }
+
+      canvas {
+        border: 1px solid;
+      }
+    </style>
+    <title>Canvas resilience test</title>
+  </head>
+  <body style="margin:0; padding: 0">
+    <button onclick="addBlocks(1)">Add 1</button>
+    <button onclick="addBlocks(100)">Add 100</button>
+    <button onclick="addBlocks(500)">Add 500</button>
+    <button onclick="addBlocks(1000)">Add 1000</button>
+    <p id="total">Total: 0</p>
+    <br>
+    <canvas id="canvas" height="500" width="900"></canvas>
+  </body>
+  <script type="text/javascript" src="script.js"></script>
+</html>
