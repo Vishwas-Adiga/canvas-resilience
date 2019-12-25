@@ -151,9 +151,11 @@ function canvasDownHandler(e) {
 function canvasMoveHandler(e) {
   if(heldBlock) {
     var box = heldBlock.getBoundingBox();
-    ctx.clearRect(box.x, box.y, box.x + box.w, box.y + box.h);
+    ctx.clearRect(box.x, box.y, box.w, box.h);
     heldBlock.moveTo(e.offsetX, e.offsetY);
 
+    renderBlocks(box);
+    ctx.drawImage(heldBlock.getImg(), heldBlock.x, heldBlock.y);
     /*ctx.beginPath();
     for(let block of blocks) {
       ctx.fillStyle = '#CC861E';
@@ -176,14 +178,39 @@ function canvasMoveHandler(e) {
     for(let block of blocks) {
       block.drawText();
     }*/
+  }
+}
+
+function renderBlocks(overlappingBox) {
+  if(!overlappingBox) {
     for(let block of blocks) {
       ctx.drawImage(block.getImg(), block.x, block.y);
     }
+    return;
+  }
+
+  for(let block of blocks) {
+    if(isOverlapping(block.getBoundingBox(), overlappingBox))
+      ctx.drawImage(block.getImg(), block.x, block.y);
   }
 }
 
 function canvasUpHandler(e) {
   heldBlock = null;
+}
+
+function valueInRange(value, min, max) {
+  return (value >= min) && (value <= max);
+}
+
+function isOverlapping(A, B) {
+  let xOverlap = valueInRange(A.x, B.x, B.x + B.w) ||
+                 valueInRange(B.x, A.x, A.x + A.w);
+
+  let yOverlap = valueInRange(A.y, B.y, B.y + B.h) ||
+                 valueInRange(B.y, A.y, A.y + A.h);
+
+  return xOverlap && yOverlap;
 }
 
 function addBlocks(count) {
@@ -192,7 +219,8 @@ function addBlocks(count) {
   blockCount+= count;
   document.getElementById('total').innerText = 'Total: ' + blockCount;
   heldBlock = blocks[0];
-  canvasMoveHandler({offsetX : 0, offsetY : 0});
+  //canvasMoveHandler({offsetX : 0, offsetY : 0});
+  renderBlocks();
   heldBlock = null;
 }
 
